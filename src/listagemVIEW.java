@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -152,41 +153,34 @@ public class listagemVIEW extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
+    
+    private void listarTabela() {
+    try {
+        ProdutosDAO produtosdao = new ProdutosDAO();
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(listagemVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new listagemVIEW().setVisible(true);
-//            }
-//        });
-//    }
+        
+        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+        model.setNumRows(0); // limpa a tabela antes de começar
+
+        //pega a lista que o método do DAO devolve
+        ArrayList<ProdutosDTO> lista = produtosdao.listarProdutos();
+
+        // Loop para preencher a tabela visual
+        for (int num = 0; num < lista.size(); num++) {
+            model.addRow(new Object[]{
+                lista.get(num).getId(),
+                lista.get(num).getNome(),
+                lista.get(num).getValor(),
+                lista.get(num).getStatus()
+            });
+        }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao preencher a tabela: " + e.getMessage());
+        }
+    }
+    
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVendas;
